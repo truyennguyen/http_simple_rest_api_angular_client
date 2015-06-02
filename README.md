@@ -1,1 +1,1 @@
-Create a single resource rest API with Angular Client Side
+A single resource rest API using Angular

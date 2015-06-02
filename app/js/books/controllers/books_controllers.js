@@ -7,7 +7,7 @@ module.exports = function(app) {
 
     $scope.getAll = function() {
       $http.get('/api/books')
-        .success(function(data) {
+        .success(function(data){
           $scope.books = data;
         })
         .error(function(data) {
@@ -19,7 +19,7 @@ module.exports = function(app) {
     $scope.createNewBook = function() {
       $http.post('/api/books', $scope.newBook)
         .success(function(data) {
-          $scope.notes.push(data);
+          $scope.books.push(data);
           $scope.newBook = null; 
         })
         .error(function(data) {
