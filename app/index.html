@@ -13,25 +13,8 @@
         <div>Book Author: <input data-ng-model="book.author" type="text"></div>
         <div>Book Price: <input data-ng-model="book.price" type="text"></div>
         <button type="submit" data-ng-disabled="newBookForm.$invalid">Add Book</button>
-      </form>     
-    <h2>Get Books</h2>
-    <button data-ng-click="getAll()">Get Books</button>
-      <ul data-ng-repeat="book in books">
-        <li>name: {{book.name}}</li>
-        <li>author: {{book.author}}</li>
-        <li>price: {{book.price}}</li>          
-        <button data-ng-click="removeBook(book)">Delete Book</button>
-        <button data-ng-if="!book.editing" data-ng-click="editBook(book)">Edit</button>
-        <div name="{{'editing' + book_id}}" data-ng-if="book.editing">
-          <form data-ng-submit="saveBook(book)">
-            <div>name: <input data-ng-model="book.name" type="text"></div>
-            <div>author: <input data-ng-model="book.author" type="text"></div>
-            <div>price: <input data-ng-model="book.price" type="text"></div>
-            <button type="submit">Save Changes</button>
-          </form>
-          <button data-ng-click="cancelEdit(book)">Cancel</button>
-        </div>
-      </ul>
+      </form>
+      <div data-book-form-directive></div>
   </main>
   <script src="bundle.js"></script>
 </body>
