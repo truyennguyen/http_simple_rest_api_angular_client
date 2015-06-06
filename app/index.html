@@ -8,12 +8,12 @@
   <main data-ng-controller="booksController">
     <h1>Welcome to the Book store</h1>
     <h2>Add book to the list:</h2>
-      <form name="newBookForm" data-ng-submit="createNewBook()">
-        <div>Book Name: <input data-ng-model="newBook.name" type="text"></div>
-        <div>Book Author: <input data-ng-model="newBook.author" type="text"></div>
-        <div>Book Price: <input data-ng-model="newBook.price" type="text"></div>
+      <form name="newBookForm" data-ng-submit="createNewBook(book)">
+        <div>Book Name: <input data-ng-model="book.name" type="text"></div>
+        <div>Book Author: <input data-ng-model="book.author" type="text"></div>
+        <div>Book Price: <input data-ng-model="book.price" type="text"></div>
         <button type="submit" data-ng-disabled="newBookForm.$invalid">Add Book</button>
-      </form>
+      </form>     
     <h2>Get Books</h2>
     <button data-ng-click="getAll()">Get Books</button>
       <ul data-ng-repeat="book in books">

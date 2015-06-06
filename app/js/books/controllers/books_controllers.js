@@ -1,31 +1,28 @@
 'use strict';
 
 module.exports = function(app) {
-  app.controller('booksController', ['$scope', '$http', function($scope, $http) {
+  app.controller('booksController', ['$scope', 'RESTResource', function($scope, resource) {
+    var Book = resource('books');
+
     $scope.errors = [];
     $scope.books = [];
 
     $scope.getAll = function() {
-      $http.get('/api/books')
-        .success(function(data){
-          $scope.books = data;
-        })
-        .error(function(data) {
-          console.log(data);
-          $scope.errors.push({msg: 'error retrieving books'});
-        });
+      Book.getAll(function(err, data){
+        if(err)
+          return $scope.errors.push({msg: "error getting books"});
+        $scope.books = data;
+      });
     };
 
-    $scope.createNewBook = function() {
-      $http.post('/api/books', $scope.newBook)
-        .success(function(data) {
-          $scope.books.push(data);
-          $scope.newBook = null; 
-        })
-        .error(function(data) {
-          console.log(data);
-          $scope.errors.push({msg: 'could not create new book'});
-        })
+    $scope.createNewBook = function(book) {
+      var newBook = angular.copy(book);
+      $scope.books.push(newBook);
+      Book.create(newBook, function(err, data){
+        if(err)
+          return $scope.errors.push({msg: "could not add book" + newBook.name});
+        $scope.books.splice($scope.books.indexOf(newBook), 1, data);
+      });
     };
 
 	$scope.editBook = function(book) {
@@ -43,25 +40,22 @@ module.exports = function(app) {
 
     $scope.removeBook = function(book) {
       $scope.books.splice($scope.books.indexOf(book), 1);
-      $http.delete('/api/books/' + book._id)
-        .error(function(data) {
-          console.log(data);
-          $scope.errors.push({msg: 'could not remove book: ' + book.name});
-        });
+      Book.remove(book, function(err, data){
+        if(err)
+          return $scope.errors.push({msg: 'could not remove book' + book.name})
+      });
     };
 
     $scope.saveBook = function(book) {
+      Book.save(book, function(err, data){
+        if(err)
+          return $scope.errors.push({msg: 'could not update book'});
+      });
       book.editing = false;
-      $http.put('/api/books/' + book._id, book)
-        .error(function(data) {
-          console.log(data);
-          $scope.errors.push({msg: 'could not update book'});
-        });
     };
 
     $scope.clearErrors = function() {
       $scope.errors = [];
-      $scope.getAll();
     };
   }]);
 };
